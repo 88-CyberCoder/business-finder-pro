@@ -1,12 +1,16 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Search, MapPin, Copy, ExternalLink, Sparkles, Globe2, Check } from "lucide-react";
+import { useServerFn } from "@tanstack/react-start";
+import { Search, MapPin, Copy, ExternalLink, Sparkles, Globe2, Check, Radar, Mail, Phone, Globe, Loader2, AlertTriangle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { Badge } from "@/components/ui/badge";
 import { toast } from "sonner";
 import { Toaster } from "@/components/ui/sonner";
+import { findLeads, enrichLead, type Lead } from "@/lib/leads.functions";
 
 export const Route = createFileRoute("/")({
   head: () => ({
