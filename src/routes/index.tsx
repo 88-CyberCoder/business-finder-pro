@@ -145,144 +145,127 @@ function HomePage() {
         </p>
       </section>
 
-      {/* Form */}
+      {/* Tabs */}
       <section className="mx-auto max-w-4xl px-6 pb-16">
-        <form
-          onSubmit={handleGenerate}
-          className="glass-card rounded-2xl p-6 sm:p-8"
-        >
-          <div className="grid gap-5 sm:grid-cols-2">
-            <div className="sm:col-span-2">
-              <Label htmlFor="niche" className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Business Niche
-              </Label>
-              <Input
-                id="niche"
-                placeholder="e.g. Dental clinics, Real estate agencies, Coffee shops"
-                value={niche}
-                onChange={(e) => setNiche(e.target.value)}
-                className="h-12 bg-input/60 text-base"
-                maxLength={120}
-              />
-            </div>
+        <Tabs defaultValue="links" className="w-full">
+          <TabsList className="mb-6 grid w-full grid-cols-2 bg-card/40 backdrop-blur">
+            <TabsTrigger value="links">
+              <MapPin className="mr-2 h-4 w-4" /> Maps Links
+            </TabsTrigger>
+            <TabsTrigger value="leads">
+              <Radar className="mr-2 h-4 w-4" /> Lead Finder
+            </TabsTrigger>
+          </TabsList>
 
-            <div>
-              <Label htmlFor="locations" className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Cities or States
-              </Label>
-              <Textarea
-                id="locations"
-                placeholder={"New York\nLos Angeles\nChicago, Illinois"}
-                value={locations}
-                onChange={(e) => setLocations(e.target.value)}
-                className="min-h-[120px] resize-none bg-input/60 text-base"
-                maxLength={2000}
-              />
-              <p className="mt-1.5 text-[11px] text-muted-foreground">
-                One per line, or separate with commas.
-              </p>
-            </div>
+          {/* TAB 1: Original maps-link generator */}
+          <TabsContent value="links">
+            <form onSubmit={handleGenerate} className="glass-card rounded-2xl p-6 sm:p-8">
+              <div className="grid gap-5 sm:grid-cols-2">
+                <div className="sm:col-span-2">
+                  <Label htmlFor="niche" className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Business Niche
+                  </Label>
+                  <Input
+                    id="niche"
+                    placeholder="e.g. Dental clinics, Real estate agencies, Coffee shops"
+                    value={niche}
+                    onChange={(e) => setNiche(e.target.value)}
+                    className="h-12 bg-input/60 text-base"
+                    maxLength={120}
+                  />
+                </div>
 
-            <div>
-              <Label htmlFor="country" className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                Country <span className="text-muted-foreground/60">(optional)</span>
-              </Label>
-              <Input
-                id="country"
-                placeholder="e.g. United States"
-                value={country}
-                onChange={(e) => setCountry(e.target.value)}
-                className="h-12 bg-input/60 text-base"
-                maxLength={80}
-              />
-            </div>
-          </div>
+                <div>
+                  <Label htmlFor="locations" className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Cities or States
+                  </Label>
+                  <Textarea
+                    id="locations"
+                    placeholder={"New York\nLos Angeles\nChicago, Illinois"}
+                    value={locations}
+                    onChange={(e) => setLocations(e.target.value)}
+                    className="min-h-[120px] resize-none bg-input/60 text-base"
+                    maxLength={2000}
+                  />
+                  <p className="mt-1.5 text-[11px] text-muted-foreground">One per line, or separate with commas.</p>
+                </div>
 
-          <Button
-            type="submit"
-            disabled={!canSearch}
-            className="mt-6 h-12 w-full bg-[image:var(--gradient-primary)] text-base font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-95 disabled:opacity-50"
-          >
-            <Search className="mr-2 h-4 w-4" />
-            Generate Google Maps Links
-          </Button>
-        </form>
+                <div>
+                  <Label htmlFor="country" className="mb-2 block text-xs font-medium uppercase tracking-wider text-muted-foreground">
+                    Country <span className="text-muted-foreground/60">(optional)</span>
+                  </Label>
+                  <Input
+                    id="country"
+                    placeholder="e.g. United States"
+                    value={country}
+                    onChange={(e) => setCountry(e.target.value)}
+                    className="h-12 bg-input/60 text-base"
+                    maxLength={80}
+                  />
+                </div>
+              </div>
 
-        {/* Results */}
-        {results.length > 0 && (
-          <div className="mt-10">
-            <div className="mb-4 flex items-center justify-between">
-              <h2 className="text-xl font-semibold">
-                {results.length} result{results.length > 1 ? "s" : ""}
-              </h2>
               <Button
-                onClick={copyAll}
-                variant="outline"
-                size="sm"
-                className="border-border/60 bg-card/40 backdrop-blur"
+                type="submit"
+                disabled={!canSearch}
+                className="mt-6 h-12 w-full bg-[image:var(--gradient-primary)] text-base font-semibold text-primary-foreground shadow-[var(--shadow-glow)] transition hover:opacity-95 disabled:opacity-50"
               >
-                <Copy className="mr-1.5 h-3.5 w-3.5" />
-                Copy all
+                <Search className="mr-2 h-4 w-4" />
+                Generate Google Maps Links
               </Button>
-            </div>
+            </form>
 
-            <ul className="space-y-3">
-              {results.map((r) => (
-                <li
-                  key={r.id}
-                  className="glass-card group rounded-xl p-4 transition hover:border-primary/40"
-                >
-                  <div className="flex items-start gap-4">
-                    <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
-                      <MapPin className="h-4 w-4" />
-                    </div>
-                    <div className="min-w-0 flex-1">
-                      <p className="truncate font-medium">
-                        {r.niche} <span className="text-muted-foreground">in</span>{" "}
-                        <span className="text-primary">{r.location}</span>
-                        {r.country && (
-                          <span className="text-muted-foreground">, {r.country}</span>
-                        )}
-                      </p>
-                      <a
-                        href={r.url}
-                        target="_blank"
-                        rel="noreferrer"
-                        className="mt-1 block truncate text-xs text-muted-foreground hover:text-foreground"
-                      >
-                        {r.url}
-                      </a>
-                    </div>
-                    <div className="flex shrink-0 items-center gap-2">
-                      <Button
-                        type="button"
-                        size="sm"
-                        variant="ghost"
-                        onClick={() => copy(r)}
-                        className="h-9"
-                      >
-                        {copiedId === r.id ? (
-                          <Check className="h-4 w-4 text-primary" />
-                        ) : (
-                          <Copy className="h-4 w-4" />
-                        )}
-                      </Button>
-                      <Button
-                        asChild
-                        size="sm"
-                        className="h-9 bg-[image:var(--gradient-primary)] text-primary-foreground hover:opacity-95"
-                      >
-                        <a href={r.url} target="_blank" rel="noreferrer">
-                          Open <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
-                        </a>
-                      </Button>
-                    </div>
-                  </div>
-                </li>
-              ))}
-            </ul>
-          </div>
-        )}
+            {results.length > 0 && (
+              <div className="mt-10">
+                <div className="mb-4 flex items-center justify-between">
+                  <h2 className="text-xl font-semibold">
+                    {results.length} result{results.length > 1 ? "s" : ""}
+                  </h2>
+                  <Button onClick={copyAll} variant="outline" size="sm" className="border-border/60 bg-card/40 backdrop-blur">
+                    <Copy className="mr-1.5 h-3.5 w-3.5" /> Copy all
+                  </Button>
+                </div>
+
+                <ul className="space-y-3">
+                  {results.map((r) => (
+                    <li key={r.id} className="glass-card group rounded-xl p-4 transition hover:border-primary/40">
+                      <div className="flex items-start gap-4">
+                        <div className="mt-0.5 flex h-9 w-9 shrink-0 items-center justify-center rounded-lg bg-primary/15 text-primary">
+                          <MapPin className="h-4 w-4" />
+                        </div>
+                        <div className="min-w-0 flex-1">
+                          <p className="truncate font-medium">
+                            {r.niche} <span className="text-muted-foreground">in</span>{" "}
+                            <span className="text-primary">{r.location}</span>
+                            {r.country && <span className="text-muted-foreground">, {r.country}</span>}
+                          </p>
+                          <a href={r.url} target="_blank" rel="noreferrer" className="mt-1 block truncate text-xs text-muted-foreground hover:text-foreground">
+                            {r.url}
+                          </a>
+                        </div>
+                        <div className="flex shrink-0 items-center gap-2">
+                          <Button type="button" size="sm" variant="ghost" onClick={() => copy(r)} className="h-9">
+                            {copiedId === r.id ? <Check className="h-4 w-4 text-primary" /> : <Copy className="h-4 w-4" />}
+                          </Button>
+                          <Button asChild size="sm" className="h-9 bg-[image:var(--gradient-primary)] text-primary-foreground hover:opacity-95">
+                            <a href={r.url} target="_blank" rel="noreferrer">
+                              Open <ExternalLink className="ml-1.5 h-3.5 w-3.5" />
+                            </a>
+                          </Button>
+                        </div>
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </TabsContent>
+
+          {/* TAB 2: Lead finder */}
+          <TabsContent value="leads">
+            <LeadFinder />
+          </TabsContent>
+        </Tabs>
       </section>
 
       <footer className="border-t border-border/50">
