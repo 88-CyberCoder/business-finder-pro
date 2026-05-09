@@ -371,7 +371,7 @@ function LeadFinder() {
           {loading ? "Scanning businesses…" : "Find businesses without a website"}
         </Button>
         <p className="mt-3 text-[11px] text-muted-foreground">
-          Powered by OpenStreetMap. Filters businesses with no website, or whose only web presence is Facebook / Instagram / TikTok.
+          Powered by Google Maps (Places API). Filters businesses with no website, or whose only web presence is Facebook / Instagram / TikTok / LinkedIn.
         </p>
       </form>
 
